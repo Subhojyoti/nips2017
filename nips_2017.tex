@@ -1,0 +1,129 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+% \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading nips_2017
+%
+% to avoid loading the natbib package, add option nonatbib:
+% \usepackage[nonatbib]{nips_2017}
+
+\usepackage{nips_2017}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+% \usepackage[final]{nips_2017}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+
+
+\usepackage{macros}
+
+\title{UCB with clustering and improved exploration}
+
+% The \author macro works with any number of authors. There are two
+% commands used to separate the names and addresses of multiple
+% authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to
+% break the lines. Using \AND forces a line break at that point. So,
+% if LaTeX puts 3 of 4 authors names on the first line, and the last
+% on the second line, try using \AND instead of \And before the third
+% author name.
+
+%\author{
+%  David S.~Hippocampus\thanks{Use footnote for providing further
+%    information about author (webpage, alternative
+%    address)---\emph{not} for acknowledging funding agencies.} \\
+%  Department of Computer Science\\
+%  Cranberry-Lemon University\\
+%  Pittsburgh, PA 15213 \\
+%  \texttt{hippo@cs.cranberry-lemon.edu} \\
+%  %% examples of more authors
+%  %% \And
+%  %% Coauthor \\
+%  %% Affiliation \\
+%  %% Address \\
+%  %% \texttt{email} \\
+%  %% \AND
+%  %% Coauthor \\
+%  %% Affiliation \\
+%  %% Address \\
+%  %% \texttt{email} \\
+%  %% \And
+%  %% Coauthor \\
+%  %% Affiliation \\
+%  %% Address \\
+%  %% \texttt{email} \\
+%  %% \And
+%  %% Coauthor \\
+%  %% Affiliation \\
+%  %% Address \\
+%  %% \texttt{email} \\
+%}
+
+\begin{document}
+% \nipsfinalcopy is no longer used
+
+\maketitle
+
+\begin{abstract}
+In this paper, we present a novel algorithm for the stochastic multi-armed bandit (MAB) problem. Our proposed Clustered UCB method, referred to as ClusUCB partitions the arms into clusters and then follows the UCB-Improved strategy with aggressive exploration factors to eliminate sub-optimal arms, as well as entire clusters. Through a theoretical analysis, we establish that ClusUCB achieves a better gap-dependent regret upper bound than UCB-Improved~\cite{auer2010ucb} and MOSS~\cite{audibert2009minimax} algorithms. ClusUCB also achieves a gap-independent regret bound of $O\left(\sqrt{KT}\right)$ which is comparable to MOSS and OCUCB~\cite{lattimore2016optimally} and is order optimal. Further, numerical experiments on test-cases with small gaps between optimal and sub-optimal mean rewards show that ClusUCB results in lower cumulative regret than several popular UCB variants as well as MOSS, OCUCB~\cite{lattimore2015optimally}, Thompson sampling and Bayes-UCB\cite{kaufmann2012bayesian}. 
+%We also present another algorithm called Adaptive Clustered UCB or AClusUCB which is intended to look at the effect of using more traditional approaches, like hierarchical clustering, for the grouping of arms.
+
+%\keywords{Multi-armed Bandits, Cumulative Regret, Clustering, UCB-Improved}
+\end{abstract}
+
+%\vspace*{-3em}
+\section{Introduction}
+\label{sec:intro}
+\input{intro}
+
+\section{Algorithm: Clustered UCB}
+\label{sec:clusucb}
+\input{algo}
+
+\section{Main results}
+\label{sec:results}
+\input{results}
+
+
+\section{Simulation experiments}
+\label{sec:expts}
+\input{expts}
+
+
+\section{Conclusions and future work}
+\label{sec:conclusions}
+From a theoretical viewpoint, we conclude that the gap-dependent regret bound of ClusUCB is lower than MOSS and UCB-Improved and its gap-independent regret bound is of the same order as MOSS ans OCUCB. From the numerical experiments on settings with small gaps between optimal and sub-optimal mean rewards, we observed that EClusUCB outperforms several popular bandit algorithms,  including OCUCB. Also ClusUCB is remarkably stable for a large horizon and large number of arms and performs well across different types of distributions. While we exhibited better regret bounds for ClusUCB, it would be interesting future research to improve the theoretical analysis of ClusUCB to achieve the gap-dependent regret bound of  OCUCB. This is also one of the first papers to apply clustering in stochastic MAB and another future direction is to use this in contextual or in distributed bandits. 
+
+%Distributed bandits are a specific setup of MAB where a network of bandits collaborate with each other to identify the optimal arm(s) (see \cite{awerbuch2008competitive,liu2010distributed,szorenyi2013gossip,hillel2013distributed}). In our setting we can assign each of the $p$ clusters to individual bandits and at the end of each round they can share information synchronously to identify the optimal arm. This naturally results in a speedup of operation and helps in identifying the best arm faster. 
+
+
+%\clearpage
+%\newpage
+% In the unusual situation where you want a paper to appear in the
+% references without citing it in the main text, use \nocite
+%\nocite{langley00}
+
+\bibliography{biblio}
+\bibliographystyle{apalike}
+%\bibliographystyle{plain}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\newpage
+%\onecolumn	
+\section*{Appendix}
+\input{appendix}
+
+
+\end{document}

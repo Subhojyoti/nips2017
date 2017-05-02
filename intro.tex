@@ -1,0 +1,119 @@
+In this paper, we consider the stochastic multi-armed bandit problem, a classical problem in sequential decision making. In this setting,  a learning algorithm is provided with a set of decisions (or arms) with reward distributions unknown to the algorithm. The learning proceeds in an iterative fashion, where in each round, the algorithm chooses an arm and receives a stochastic reward that is drawn from a stationary distribution specific to the arm selected.  
+Given the goal of maximizing the cumulative reward, the learning algorithm faces the exploration-exploitation dilemma, i.e., in each round should the algorithm select the arm which has the highest observed mean reward so far 
+(\textit{exploitation}), or should the algorithm choose a new arm to gain more knowledge of the true mean reward of the arms and thereby avert a sub-optimal greedy decision (\textit{exploration}). 
+
+Let $r_i$, $i=1,\ldots,K$ denote the mean reward of the $i$th arm out of the $K$ arms and $r^* = \max_i r_i$ the optimal mean reward. The objective in the stochastic bandit problem is to minimize the cumulative regret, which is defined as follows:
+\begin{align*}
+R_{T}=r^{*}T - \sum_{i\in A} r_{i}N_{i}(T),
+\end{align*}
+where $T$ is the number of timesteps, $N_{i}(T)=\sum_{m=1}^T I(I_m=i)$ is the number of times the algorithm has chosen arm $i$ up to timestep $T$.
+The expected regret of an algorithm after $T$ timesteps can be written as
+%\newline
+%\newline
+\begin{align*}
+\E[R_{T}]= \sum_{i=1}^K \E[N_i(T)] \Delta_i,
+\end{align*}
+where $\Delta_{i}=r^{*}-r_{i}$ denotes the gap between the means of the optimal arm and the $i$-th arm. 
+
+
+%The problem, gets more difficult when the $\Delta_{i}$'s are smaller and arm set is larger. Also let $\Delta=min_{i\in A}\Delta_{i}$, that is it is the minimum possible gap over all arms in $A$.
+                                                                                                                                          
+
+%NEW RELATED WORK AND CONTRIBUTION
+
+An early work involving a bandit setup is \cite{thompson1933likelihood}, where the author deals with  the problem of choosing between two treatments to administer on patients who come in sequentially. Following the seminal work of \cite{robbins1952some}, bandit algorithms have been extensively studied in a variety of applications. 
+From a theoretical standpoint, an asymptotic lower bound for the regret was established in \cite{lai1985asymptotically}. In particular, it was shown that for any consistent allocation strategy, we have
+$\liminf_{T \to \infty}\frac{\E[R_{T}]}{\log T}\geq\sum_{\{i:r_{i}<r^{*}\}}\frac{(r^{*}-r_{i})}{D(p_{i}||p^{*})},$
+where $D(p_{i}||p^{*})$ is the Kullback-Leibler divergence between the reward densities $p_{i}$ and $p^{*}$, corresponding to arms with mean $r_{i}$ and $r^{*}$, respectively.
+
+	There have been several algorithms with strong regret guarantees. For further reference we point the reader to \cite{bubeck2012bandits}. The foremost among them is UCB1 \cite{auer2002finite}, which has a regret upper bound of $O\big(\frac{K\log T}{\Delta}\big)$, where $\Delta = \min_{i:\Delta_i>0} \Delta_i$. This result is asymptotically order-optimal for the class of distributions considered. However, the worst case gap independent regret bound of UCB1  can be as bad as $O \big(\sqrt{TK\log T}\big)$.  In \cite{audibert2009minimax}, the authors propose the MOSS algorithm and establish that the worst case regret of MOSS is $O\big(\sqrt{TK}\big)$ which improves upon UCB1 by a factor of order $\sqrt{\log T}$. However, the gap-dependent regret of MOSS is  $O\big(\frac{K^{2}\log\left(T\Delta^{2}/K\right)}{\Delta}\big)$ and in certain regimes, this can be worse than even UCB1 (see \cite{audibert2009minimax,lattimore2015optimally}). The UCB-Improved algorithm, proposed in \cite{auer2010ucb}, is a round-based algorithm\footnote{An algorithm is \textit{round-based} if it pulls all the arms equal number of times in each round and then proceeds to eliminate one or more arms that it identifies to be sub-optimal.} variant of UCB1 that 
+has a gap-dependent regret bound of $O\big(\frac{K\log T\Delta^{2}}{\Delta}\big)$, which is better than that of UCB1. On the other hand, the worst case regret of UCB-Improved is $O\big(\sqrt{TK\log K}\big)$. Recently in \cite{lattimore2015optimally}, the algorithm OCUCB achieves order-optimal gap-dependent regret bound of $O\left(\sum_{i=2}^{K}\frac{\log\left(T/H_i\right)}{\Delta_i}\right)$ where $H_i=\sum_{j=1}^{K}\min\lbrace \frac{1}{\Delta_i^2},\frac{1}{\Delta_j^2}\rbrace$ and gap-independent regret bound of $O\big( \sqrt{KT}\big)$. 
+%In certain environments, for a larger number of arms and uniform gaps, OCUCB does not perform well. 
+In certain environments we demonstrate that OCUCB performs poorly. This is specifically true in settings where the gaps between optimal and sub-optimal arms are uniform, which is in line with the observations of \cite{lattimore2015optimally}.
+
+The idea of clustering in the bandit framework is not entirely new. In particular, the idea of clustering has been extensively studied in the contextual bandit setup, an extension of the MAB where side information or features are attached to each arm (see  \cite{auer2002using,langford2008epoch,li2010contextual,beygelzimer2011contextual,slivkins2014contextual}) . The clustering in this case is typically done over the feature space \cite{bui2012clustered,cesa2013gang,gentile2014online}, however, in our work we cluster or group the arms.  
+
+\vspace*{-0.7em}
+\subsection{Our Contribution}
+We propose a variant of UCB algorithm, called Clustered UCB, henceforth referred to as ClusUCB, that incorporates clustering and an improved exploration scheme. ClusUCB starts with partitioning of arms into small clusters, each having same number of arms. The clustering is done at the start with a prespecified number of clusters. At the end of every round ClusUCB conducts both (individual) arm elimination as well as cluster elimination. This is the first algorithm in bandit literature which uses two simultaneous arm elimination conditions and shows both theoretically and empirically that such an approach is indeed helpful.
+
+
+%While the conditions governing the arm and cluster eliminations are inspired by UCB-Improved, the exploration factors governing these conditions are relatively more aggressive than that in UCB-Improved. 
+
+The clustering of arms provides two benefits. First, it creates a context where a UCB-Improved like algorithm can be run in parallel on smaller sets of arms with limited exploration, which could lead to fewer pulls of sub-optimal arms with the help of  more aggressive elimination of sub-optimal arms. Second, the cluster elimination leads to whole sets of sub-optimal arms being simultaneously eliminated when they are found to yield poor results. These two simultaneous criteria for arm elimination can be seen as borrowing the strengths of UCB-Improved as well as other popular round based approaches. 
+
+We will also show that in certain environments ClusUCB is able to take advantage of the underlying structure of the reward distribution of arms that other algorithms fail to take advantage of. We will briefly discuss two of these examples here.
+%Note that cluster elimination serves as a mode of indirect arm elimination whereby the other arms in the cluster is eliminated based on the performance of the best performing arm in the cluster.
+\\
+\textit{1.Bernoulli Distribution with small gaps:} In this environment there are $20$ arms with means $r_{1:12}=0.01$, $r_{13:19}=0.07$ and $r_{20}^{*} =0.1$. Here, EClusUCB because of random partitioning of arms into clusters, will create clusters where there are atleast one arm with means $0.07$ and a significant number of arms with $0.01$ means. These clusters behave like independent UCB-Improved algorithms with improved exploration factors and the arms with means $0.01$ are quickly eliminated. Note that since gaps are very small and the gaps of arms with means $0.07$ are very close to the optimal arm, comparing all arms to the single best performing arm at every timestep will result is fewer arm eliminations. Hence utilizing the clusters as in ClusUCB results in faster elimination of arms. This is shown in Experiment 1.\\
+\textit{2.Gaussian Distribution with different variances:} In this environment there are $100$ arms with means $r_{1:66}=0.1,\sigma_{1:66}^2 =0.7$, $r_{67:99}=0.8,\sigma_{67:99}^2 =0.1$ and $r_{100}^{*}=0.9, \sigma_{100}^2 =0.7$. Here, the variance of the optimal arm and arms with mean farthest from  the optimal arm are the highest. Whereas, the arms having mean closest to the optimal arm have lowest variances. In these type of cases, due to clustering ClusUCB is able to eliminate the arms with means $0.7$ quickly because clusters containing atleast one arm with $0.8$ mean behaves as independent UCB-Improved algorithms with improved exploration factors. This is shown in Experiment 2. Again, note that due to high variance of the optimal arm, comparing only with the best performing arm at every timestep results in fewer arm eliminations.
+
+Theoretically, while ClusUCB does not achieve the gap-dependent regret bound of OCUCB, the theoretical analysis establishes that the gap-dependent regret of ClusUCB is always better than that of UCB-Improved and better than that of MOSS (see Table~\ref{tab:comp-bds}. Moreover, the gap-independent bound of ClusUCB is of the same order as MOSS and OCUCB, i.e., $O\left(\sqrt{KT}\right)$. 
+
+
+\begin{table}[t]
+\caption{Regret upper bound of different algorithms}
+\label{tab:comp-bds}
+\begin{center}
+\begin{tabular}{p{6em}p{12em}p{10em}}
+\toprule
+Algorithm  & Gap-Dependent & Gap-Independent \\
+\hline
+ClusUCB		& $O\left( \dfrac{K\log (T\Delta^2 /K)}{\Delta}\right)$ & $O\left(\sqrt{KT}\right)$\\
+UCB1        & $O\left( \dfrac{K\log T}{\Delta} \right)$ & $O\left(\sqrt{KT\log T}\right)$ \\%\midrule
+UCB-Imp 		& $O\left( \dfrac{K\log (T\Delta^2)}{\Delta} \right)$ & $O\left(\sqrt{KT\log K}\right)$ \\%\midrule
+MOSS	     	& $O\left( \dfrac{K^2\log (T\Delta^2 /K)}{\Delta}\right)$ & $O\left(\sqrt{KT}\right)$\\%\midrule
+OCUCB     	& $O\left( \dfrac{K\log (T/ H_{i})}{\Delta}\right)$ & $O\left(\sqrt{KT}\right)$\\\midrule
+\end{tabular}
+\end{center}
+\vspace*{-2em}
+\end{table}
+
+
+
+%However, EClusUCB is not able to match the gap-independent bound of $O(\sqrt{KT})$ for MOSS and OCUCB. We also establish the exact values for the exploration parameters and the number of clusters required for optimal behavior in the corollaries.
+% 	To counter early exploration in \cite{liu2016modification} as well as in our algorithm we propose an exploration regulatory factor to control exploration. \textit{Our algorithm is also not an anytime algorithm}(neither is MOSS, UCB-Improved) and in this context we point out that knowledge of the horizon actually facilitates learning as it can exploit more information(as stated in \cite{lattimore2015optimally}). We also employ a couple of more strategies to bring down our regret as summarized below:-
+%\begin{table}
+%\caption{Comparison of different algorithms against EClusUCB. The \checkmark indicates that EClusUCB outperforms the respective baseline. E1, E2 and E3 correspond to experiments 1,2 and 3 in Section \ref{sec:expts}}.
+%\label{tab:comp-bds}
+%\begin{center}
+%\begin{tabular}{cccccc}
+%\toprule
+%Algorithm  & Gap-Dep & Gap-Ind & E1 & E2 & E3\\
+%\hline
+%UCB1        &\checkmark &\checkmark &\checkmark &\checkmark & N/A \\%\midrule
+%UCB-Imp 		&\checkmark &\checkmark &\checkmark &\checkmark & N/A\\%\midrule
+%MOSS	     	&\checkmark &\xmark &\checkmark &\checkmark &\checkmark\\%\midrule
+%OCUCB     	&\xmark &\xmark &\checkmark &\checkmark &\checkmark\\\midrule
+%%EClusUCB      &\checkmark &\checkmark &\checkmark &\checkmark \\\bottomrule
+%\end{tabular}
+%\end{center}
+%\vspace*{-2em}
+%\end{table}
+%\begin{table}
+%\caption{Gap-dependent regret bounds for different bandit algorithms}
+%\label{tab:regret-bds}
+%\begin{center}
+%\begin{tabular}{|c|c|}
+%\toprule
+%Algorithm  & Upper bound \\
+%\midrule
+%UCB1         &$O\left(\frac{K\log T}{\Delta}\right)$ \\\midrule
+%UCB-Improved &$O\left(\frac{K\log (T\Delta^{2})}{\Delta}\right)$ \\\midrule
+%MOSS	     &$O\left(\frac{K^{2}\log\left(T\Delta^{2}/K\right)}{\Delta}\right)$\\\midrule
+%ClusUCB$\big /$EClusUCB      &$O\left(\frac{K\log\left(\frac{T\Delta^{2}}{\sqrt{\log (K)}}\right)}{\Delta}\right)$\\\bottomrule
+%\end{tabular}
+%\end{center}
+%\vspace*{-2em}
+%\end{table}
+%While ClusUCB is a round-based algorithm, we also introduce Efficient ClusUCB or EClusUCB which has the same theoretical guarantees as ClusUCB but empirically behaves much better (see Table~\ref{tab:comp-bds}). 
+On four synthetic setups with small gaps, we observe empirically that EClusUCB outperforms UCB-Improved\cite{auer2010ucb}, MOSS\cite{audibert2009minimax} and OCUCB\cite{lattimore2015optimally} as well as other popular stochastic bandit algorithms such as UCB-V\cite{audibert2009exploration}, Median Elimination\cite{even2006action}, Thompson Sampling\cite{agrawal2011analysis}, Bayes-UCB\cite{kaufmann2012bayesian} and KL-UCB\cite{garivier2011kl}. 
+%Adaptive ClusUCB (AClusUCB) which estimates the clusters based on hierarchical clustering is introduced in Appendix \ref{App:AClusUCB}. An empirical study comparing its performance to EClusUCB is presented in experiment $4$. 
+%DMED\cite{honda2010asymptotically},
+
+The rest of the paper is organized as follows: In Section \ref{sec:clusucb} we introduce ClusUCB. In Section \ref{sec:results}, we present the associated regret bounds. In Section \ref{sec:expts}, we present the numerical experiments and provide concluding remarks in Section \ref{sec:conclusions}. Further proofs of lemmas, corollaries, theorems and propositions presented in Section \ref{sec:results}  are provided in the appendices. 
+
+%More experiments are presented in Appendix \ref{App:MoreExp}. 
+%and prove the main theorem on the regret upper bound for ClusUCB in Section \ref{sec:proofTheorem}
+%and we also show in Appendix \ref{App:MoreExp} that EClusUCB which employs an uniform clustering scheme performs better then AClusUCB
+%Appendix \ref{App:A}, \ref{App:B} deals with proofs of  2  propositions which are derived from our main regret bound theorem. Appendix \ref{App:Proof:Corollary:1}, \ref{App:Proof:Corollary:2}, \ref{App:Proof:Corollary:3} deals with proofs of 3 corollaries which specializes the result of our main regret bound theorem. Appendix \ref{App:D} deals with exploration regulatory factor and appendix \ref{App:E} explains why we do clustering. The last appendix \ref{App:Further:Expt} deals with further experiments on two different testbeds.

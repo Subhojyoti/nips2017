@@ -1,0 +1,285 @@
+
+%\newpage
+\appendix
+The Appendix is organized as follows. First we prove some technical lemmas in Appendix \ref{App:Lemma1} and Appendix \ref{App:Lemma2}. Next we prove the main theorem in Appendix \ref{sec:proofTheorem}. In Appendix \ref{App:A} we prove Proposition \ref{proofTheorem:Prop:1}. In Appendix \ref{App:Proof:Corollary:1} we prove Corollary \ref{Result:Corollary:1}.
+
+% and in Appendix \ref{App:Proof:Corollary:2} we prove Corollary \ref{Result:Corollary:2}. Appendix \ref{App:E} deals with the idea of why we do clustering. The simple regret bound of EClusUCB and its associated Corollary is proved in \ref{App:SR_EClusUCB}. Algorithm \ref{alg:aclusucb}, Adaptive Clustered UCB is shown in Appendix \ref{App:AClusUCB}. More experiments are shown in Appendix \ref{App:MoreExp}.
+
+%\section{Regret Bound Table}
+%\label{App:Table}
+%\begin{table}[!h]
+%\caption{Gap-dependent regret bounds for different bandit algorithms}
+%\label{tab:regret-bds}
+%\begin{center}
+%\begin{tabular}{|c|c|}
+%\toprule
+%Algorithm  & Upper bound \\
+%\midrule
+%UCB1         &$O\left(\frac{K\log T}{\Delta}\right)$ \\\midrule
+%UCB-Improved &$O\left(\frac{K\log (T\Delta^{2})}{\Delta}\right)$ \\\midrule
+%MOSS	     &$O\left(\frac{K^{2}\log\left(T\Delta^{2}/K\right)}{\Delta}\right)$\\\midrule
+%EClusUCB      &$O\left(\frac{K\log\left(\frac{T\Delta^{2}}{\sqrt{\log (K)}}\right)}{\Delta}\right)$\\\bottomrule
+%\end{tabular}
+%\end{center}
+%\vspace*{-2em}
+%\end{table}
+
+\section{Proof of Lemma 1}
+\label{App:Lemma1}
+
+\begin{lemma}
+\label{proofTheorem:Lemma:1}
+If $T\geq K^{2.4}$, $\psi=\dfrac{T}{ K^2}$, $\rho_a =\dfrac{1}{2}$ and $m\leq \dfrac{1}{2} \log_2\left(\dfrac{T}{e}\right) $, then,
+\begin{align*}
+\dfrac{\rho_a m \log(2)}{\log(\psi T) - 2m\log( 2)} \leq \frac{3}{2}
+\end{align*}
+\end{lemma}
+
+\begin{proof}
+The proof is based on contradiction. Suppose
+\begin{eqnarray*}
+\dfrac{\rho m \log(2)}{\log(\psi T) - 2m\log( 2)} > \frac{3}{2}.
+\end{eqnarray*}
+Then, with $\psi=\dfrac{T}{ K^2}$ and $\rho_a =\dfrac{1}{2}$, we obtain
+\begin{eqnarray*}
+6\log(K) 
+&>& 6\log(T) - 7m\log(2) \\
+&\overset{(a)}{\ge}& 6\log(T) - \frac{7}{2} \log_2\left(\frac{T}{e}\right) \log(2) \\
+&=& 2.5\log(T) + 3.5 \log_2(e)\log(2)  \\
+&\overset{(b)}{=}& 2.5\log(T) +3.5
+\end{eqnarray*}
+where $(a)$ is obtained using $m\leq \dfrac{1}{2} \log_2\left(\dfrac{T}{e}\right)$, while $(b)$ follows from the identity $\log_2(e)\log(2) =1$. Finally, for $T\ge K^{2.4}$ we obtain, $6\log(K)>6\log(K)+3.5$, which is a contradiction. Hence, for $T\geq K^{2.4}$, $\psi=\dfrac{T}{ K^2}$, $\rho=\dfrac{1}{2}$ and $m \leq \dfrac{1}{2} \log_2\left(\dfrac{T}{e}\right) $ we have, 
+\begin{align*}
+\dfrac{\rho m \log(2)}{\log(\psi T) - 2m\log( 2)} \leq \frac{3}{2}
+\end{align*}
+\end{proof}
+
+\section{Proof of Lemma 2}
+\label{App:Lemma2}
+\begin{lemma}
+\label{proofTheorem:Lemma:2}
+If $T\geq K^{2.4}$, $\psi=\dfrac{T}{ K^2}$, $\rho_a =\dfrac{1}{2}$, $m_i = min\lbrace m|\sqrt{2\epsilon_{m} } < \dfrac{\Delta_i}{4} \rbrace $ and $c_{m_i} =\sqrt{\frac{\rho_{a}\log (\psi T\epsilon_{m_{i}})}{2 n_{m_i}}}$, then, $c_{m_i} < \dfrac{\Delta_i}{4}$.
+\end{lemma}
+
+\begin{proof}
+In the $m_i$-th round $c_{m_i} =\sqrt{\frac{\rho_{a}\log (\psi T\epsilon_{m_{i}})}{2 n_{m_i}}}$. Substituting the value of $n_{m_i}=\dfrac{\log{(\psi T\epsilon_{m_{i}}^{2})}}{2\epsilon_{m_{i}}}$ in $c_{m_i}$ we get,
+\begin{align*}
+	c_{m_i} &\leq \sqrt{\dfrac{\rho_a \epsilon_{m_{i}}\log (\psi T\epsilon_{m_{i}})}{\log(\psi T\epsilon_{m_{i}}^{2})}} \leq \sqrt{\dfrac{\rho_a \epsilon_{m_{i}}\log (\frac{\psi T\epsilon_{m_{i}}^{2}}{\epsilon_{m_{i}}})}{\log(\psi T\epsilon_{m_{i}}^{2})}} \\
+	%%%%%%%%%%%%%%%%%%%%%%%%%%
+	& = \sqrt{\dfrac{\rho_a\epsilon_{m_{i}}\log (\psi T\epsilon_{m_{i}}^{2}) - \rho_a\epsilon_{m_{i}}\log (\epsilon_{m_{i}})}{\log(\psi T\epsilon_{m_{i}}^{2})}} 
+	\leq  \sqrt{\rho_a\epsilon_{m_{i}} - \dfrac{\rho_a\epsilon_{m_i}\log(\frac{1}{2^{m_i}})}{\log(\psi T \frac{1}{2^{2m_i}})}} \\
+	%%%%%%%%%%%%%%%%%%%%%%%%%%
+	&\leq \sqrt{\rho_a\epsilon_{m_{i}} + \dfrac{\rho_a\epsilon_{m_i}\log(2^{m_i})}{\log(\psi T) - \log( 2^{2m_i})}}  \leq \sqrt{\rho_a\epsilon_{m_{i}} + \dfrac{\rho_a\epsilon_{m_i}m_i \log(2)}{\log(\psi T) - 2m_i\log( 2)}} \\ 
+	%%%%%%%%%%%%%%%%%%%%%%%%%%
+	 & \overset{(a)}{\leq} \sqrt{\rho_a\epsilon_{m_{i}} + \frac{3}{2}\epsilon_{m_i}} 
+	  < \sqrt{2\epsilon_{m_i}} 
+	  < \dfrac{\Delta_{i}}{4} 
+	\end{align*}
+In the above simplification, $(a)$ is obtained using Lemma~\ref{proofTheorem:Lemma:1}. 
+\end{proof}
+
+
+
+\section{Proof of Theorem 1}
+\label{sec:proofTheorem}
+\input{proofTheorem}
+
+
+
+
+\section{Proof of Proposition 1}
+\label{App:A}
+
+\begin{proof}
+Let $p=1$ such that all the arms in $A$ belongs to a single cluster. Hence, in ClusUCB-AE there is only arm elimination and no cluster elimination. Let, for each sub-optimal arm ${i}$, $m_{i}=\min{\lbrace m|\sqrt{\epsilon_{m}} < \dfrac{\Delta_{i}}{2} \rbrace}$. Also $\rho_{a}=\frac{1}{2}$ is a constant in this proof. Let $A^{'}=\lbrace i\in A: \Delta_{i} > b \rbrace$ and $A^{''}=\lbrace i\in A: \Delta_{i} > 0 \rbrace$. 
+
+%Also $z_{i}$ denotes total number of times an arm $i$ has been pulled. In the $m$-th round, $n_{m}$ denotes the number of pulls allocated to the surviving arms in $B_{m}$. 
+%The theoretical analysis remains same as we have always bounded the values of $\rho_{a}\in (0,1]$.
+
+\subsection*{Case $a$: \textit{Some sub-optimal arm ${i}$ is not eliminated in round $m_{i}$ or before and the optimal arm ${*}\in B_{m_{i}}$}}
+  
+	Following the steps of Theorem \ref{Result:Theorem:1} Case $a1$, an arbitrary sub-optimal arm ${i}\in A^{'}$ can get eliminated only when the event,
+	\begin{align}
+	\hat{r}_{i}  \le r_{i} + c_{m_i} \text{ and } \label{eq:appA:armelim-casea}
+ 	\hat{r}^{*}\geq  r^{*} - c_{m_i}
+	\end{align}
+	
+	takes place. So to bound the regret we need to bound the probability of the complementary event of these two conditions. Note that  $c_{m_{i}} = \sqrt{\frac{\rho_{a}\log (\psi T\epsilon_{m_{i}})}{2 n_{m_i}}}$. A sub-optimal arm $i$ will get eliminated in the $m_i$-th round because $n_{m_{i}}=\dfrac{\log{(\psi T\epsilon_{m_{i}}^{2})}}{2\epsilon_{m_{i}}}$ and substituting this in $c_{m_i}$ and applying Lemma \ref{proofTheorem:Lemma:2} we get, $c_{m_i} < \dfrac{\Delta_{i}}{4} $.
+
+  Again, for ${i} \in A^{'}$, 
+  \begin{align*}
+\hat{r}_{i} + c_{m_i}&\leq r_{i} + 2c_{m_i} 
+%&= \hat{r}_{i} + 4c_{m_{i}} - 2c_{m_{i}} \\
+ < r_{i} + \Delta_{i} - 2c_{m_i}
+ \leq r^{*} -2c_{m_i} 
+ \leq \hat{r}^{*} - c_{m_i}
+  \end{align*}
+
+	Applying Chernoff-Hoeffding bound and considering independence of complementary of the two events in \ref{eq:appA:armelim-casea},
+  \begin{align*}
+\mathbb{P}\lbrace\hat{r}_{i}&\geq r_{i} + c_{m_i}\rbrace\leq \exp(-2c_{m_i}^{2}n_{m_{i}})
+\leq \exp(-2 * \dfrac{\rho_{a}\log (\psi T\epsilon_{m_{i}})}{2 n_{m_{i}}} *n_{m_{i}})
+\leq \dfrac{1}{(\psi T\epsilon_{m_{i}})^{\rho_{a}}}   
+  \end{align*}
+ 
+%$\leq \bigg(\dfrac{1}{4\psi T\epsilon_{m}^{2}}\bigg)^{D}$, as $\ell_{m}-1\leq D$
+% \hspace*{2em}
+ 
+Similarly, $\mathbb{P}\lbrace\hat{r}^{*}\leq r^{*} - c_{m_i}\rbrace\leq \dfrac{1}{(\psi  T\epsilon_{m_{i}})^{\rho_{a}}}$. Summing the two up, the probability that a sub-optimal arm ${i}$ is not eliminated on or before $m_{i}$-th round is  $\bigg(\dfrac{2}{(\psi T\epsilon_{m_{i}})^{\rho_{a}}}\bigg)$. 
+ 
+Summing up over all arms in $A^{'}$ and bounding the regret for each arm $i\in A^{'}$ trivially by $T\Delta_{i}$, we obtain
+   \begin{align*}
+\sum_{i\in A^{'}}\bigg(\dfrac{2T\Delta_{i}}{(\psi T\epsilon_{m_{i}})^{\rho_{a}}}\bigg)
+\leq\sum_{i\in A^{'}}\bigg(\dfrac{2T\Delta_{i}}{(\psi T\dfrac{\Delta_{i}^{2}}{32})^{\rho_{a}}}\bigg)
+&\leq \sum_{i\in A^{'}}\bigg(\dfrac{2^{1+4\rho_{a}}T^{1-\rho_{a}}\Delta_{i}}{\psi^{\rho_{a}}\Delta_{i}^{2\rho_{a}}}\bigg)
+\leq \sum_{i\in A^{'}}\bigg(\dfrac{2^{1+5\rho_{a}}T^{1-\rho_{a}}}{\psi^{\rho_{a}}\Delta_{i}^{2\rho_{a}-1}}\bigg)\\  
+%%%%%%%%%%%%%%%%%% 
+& \overset{(a)}{\leq}\sum_{i\in A^{'}}\leq 8\sqrt{2} K
+   \end{align*}
+
+Here, $(a)$ is obtained by substituting the values of $\psi$ and $\rho_a$.
+
+\subsection*{Case $b$: \textit{Either an arm ${i}$ is eliminated in round $m_{i}$ or before or else there is no optimal arm ${*}\in B_{m_{i}}$ }}
+
+\subsubsection*{Case $b1$: \textit{${*}\in B_{m_{i}}$ and each ${i}\in A^{'}$ is  eliminated on or before $m_{i}$ } }
+
+ Since we are eliminating a sub-optimal arm ${i}$ on or before round $m_{i}$, it is pulled no longer than, 
+ \begin{align*}
+  \bigg\lceil\dfrac{\log{(\psi T\epsilon_{m_{i}}^{2})}}{2\epsilon_{m_{i}}}\bigg\rceil
+ \end{align*}
+
+So, the total contribution of ${i}$  till round $m_{i}$ is given by, 
+\begin{align*}
+&\Delta_{i}\bigg\lceil\dfrac{\log{(\psi T\epsilon_{m_{i}}^{2})}}{2\epsilon_{m_{i}}}\bigg\rceil
+\leq\Delta_{i}\bigg\lceil\dfrac{\log{(\psi T(\dfrac{\Delta_{i}}{4\sqrt{2}})^{4})}}{(\dfrac{\Delta_{i}}{4\sqrt{2}})^{2}}\bigg\rceil \text{, since } \sqrt{2\epsilon_{m_{i}}} < \dfrac{\Delta_{i}}{4}\\
+&\overset{(a)}{\leq}\Delta_{i}\bigg(1+\dfrac{32\log{(\frac{T}{K^2} T(\Delta_{i})^{4})}}{\Delta_{i}^{2}}\bigg)
+\leq\Delta_{i}\bigg(1+\dfrac{32\log{( \frac{T\Delta_i^2}{K})}}{\Delta_{i}^{2}}\bigg)
+\end{align*} 
+ 
+In the above case, $(a)$ is obtained by substituting the values of $\psi$ and $\rho_a$. Summing over all arms in $A^{'}$ the total regret is given by, 
+\begin{align*}
+\sum_{i\in A^{'}}\Delta_{i}\bigg(1+\dfrac{32\log{( \frac{T\Delta_i^2}{K})}}{\Delta_{i}^{2}}\bigg)
+\end{align*}
+
+\subsubsection*{Case $b2$: \textit{Optimal arm ${*}$ is eliminated by a sub-optimal arm  }}
+
+
+	Firstly, if conditions of Case $a$ holds then the optimal arm ${*}$ will not be eliminated in round $m=m_{*}$ or it will lead to the contradiction that $r_{i}>r^{*}$. In any round $m_{*}$, if the optimal arm ${*}$ gets eliminated then for any round from $1$ to $m_{j}$ all arms ${j}$ such that $m_{j}< m_{*}$ were eliminated according to assumption in Case $a$. Let the arms surviving till $m_{*}$ round be denoted by $A^{'}$. This leaves any arm $a_{b}$ such that $m_{b}\geq m_{*}$ to still survive and eliminate arm ${*}$ in round $m_{*}$. Let such arms that survive ${*}$ belong to $A^{''}$. Also maximal regret per step after eliminating ${*}$ is the maximal $\Delta_{j}$ among the remaining arms ${j}$ with $m_{j}\geq m_{*}$.  Let $m_{b}=\min\lbrace m|\sqrt{2\epsilon_{m}}<\dfrac{\Delta_{b}}{4}\rbrace$. Hence, the maximal regret after eliminating the arm ${*}$ is upper bounded by, 
+\begin{align*}
+&\sum_{m_{*}=0}^{max_{j\in A^{'}}m_{j}}\sum_{i\in A^{''}:m_{i}>m_{*}}\bigg(\dfrac{2}{(\psi  T\epsilon_{m_{*}})^{\rho_{a}}} \bigg).T\max_{j\in A^{''}:m_{j}\geq m_{*}}{\Delta}_{j}\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+&\leq\sum_{m_{*}=0}^{max_{j\in A^{'}}m_{j}}\sum_{i\in A^{''}:m_{i}>m_{*}}\bigg(\dfrac{2}{(\psi  T\epsilon_{m_{*}})^{\rho_{a}}} \bigg).T.4\sqrt{2}\sqrt{\epsilon_{m_{*}}}\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+&\leq\sum_{m_{*}=0}^{max_{j\in A^{'}}m_{j}}\sum_{i\in A^{''}:m_{i}>m_{*}}8\sqrt{2}\bigg(\dfrac{T^{1-\rho_{a}}}{\psi^{\rho_{a}}\epsilon_{m_{*}}^{\rho_{a}-\frac{1}{2}}} \bigg)\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+&\leq\sum_{i\in A^{''}:m_{i}>m_{*}}\sum_{m_{*}=0}^{\min{\lbrace m_{i},m_{b}\rbrace}}\bigg(\dfrac{8\sqrt{2}T^{1-\rho_{a}}}{\psi^{\rho_{a}}2^{-(\rho_{a}-\frac{1}{2})m_{*}}} \bigg)\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+&\leq\sum_{i\in A^{'}}\bigg(\dfrac{8\sqrt{2}T^{1-\rho_{a}}}{\psi^{\rho_{a}}2^{-(\rho_{a}-\frac{1}{2})m_{*}}} \bigg)+\sum_{i\in A^{''}\setminus A^{'}}\bigg(\dfrac{8\sqrt{2}T^{1-\rho_{a}}}{\psi^{\rho_{a}}2^{-(\rho_{a}-\frac{1}{2})m_{b}}} \bigg)\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+&\leq\sum_{i\in A^{'}}\bigg(\dfrac{4T^{1-\rho_{a}}*2^{\rho_{a}-\frac{1}{2}}}{\psi^{\rho_{a}}\Delta_{i}^{8\sqrt{2}\rho_{a}-1}} \bigg)+\sum_{i\in A^{''}\setminus A^{'}}\bigg(\dfrac{8\sqrt{2}T^{1-\rho_{a}}*2^{\rho_{a}-\frac{1}{2}}}{\psi^{\rho_{a}}b^{2\rho_{a}-1}} \bigg)\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+&\leq\sum_{i\in A^{'}}\bigg(\dfrac{T^{1-\rho_{a}}2^{\rho_{a}+\frac{7}{2}}}{\psi^{\rho_{a}}\Delta_{i}^{2\rho_{a}-1}} \bigg)+\sum_{i\in A^{''}\setminus A^{'}}\bigg(\dfrac{T^{1-\rho_{a}}2^{\rho_{a}+\frac{7}{2}}}{\psi^{\rho_{a}}b^{2\rho_{a}-1}} \bigg)\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+&\overset{(a)}{\leq}\sum_{i\in A^{'}}16K +\sum_{i\in A^{''}\setminus A^{'}} 16K\\
+%& = \sum_{i\in A^{'}}\bigg(\dfrac{ C_{2}(\rho_{a}) T^{1-\rho_{a}}}{\Delta_{i}^{4\rho_{a}-1}} \bigg)+\sum_{i\in A^{''}\setminus A^{'}}\bigg(\dfrac{C_{2(\rho_{a})}T^{1-\rho_{a}}}{b^{4\rho_{a}-1}} \bigg) \text{, where } C_2(x) = \frac{2^{2x+\frac{3}{2}}}{\psi^{x}}
+\end{align*}
+
+Again $(a)$ is obtained by substituting the values of $\psi$ and $\rho_a$. Summing up \textbf{Case a} and \textbf{Case b}, the total regret till round $m$ is given by,
+\begin{align*}
+ \E[R_{T}] \leq &\sum\limits_{i\in A:\Delta_{i} > b} \left\lbrace 12K + \bigg(\Delta_{i}+\dfrac{32\log{(\frac{T\Delta_i^2}{K})}}{\Delta_{i}}\bigg) + 16K\right\rbrace +\sum\limits_{i\in A:0 < \Delta_{i}\leq b} 16K + \max_{i\in A:\Delta_{i}\leq b}\Delta_{i}T
+\end{align*}
+\end{proof}
+
+
+\section{Proof of Corollary 1}
+\label{App:Proof:Corollary:1}
+\begin{proof}
+%As stated in \cite{auer2010ucb}, the regret bound can be of the order of $\sqrt{KT\log K}$ in non-stochastic MAB setting. This is shown in Exp4\cite{auer2002nonstochastic} algorithm. 
+First we recall the definition of Theorem \ref{Result:Theorem:1} below,
+\begin{align*}
+&\E [R_{T}]\leq 
+\sum\limits_{\substack{i\in A_{s^{*}},\\\Delta_{i} > b}}\bigg\lbrace \Delta_{i} + 12K
++ \frac{32\log{(\frac{T\Delta_i^2}{K})}}{\Delta_{i}} \bigg\rbrace
+ + \! \! \sum\limits_{\substack{i\in A,\\\Delta_{i} > b}} \bigg\lbrace 2\Delta_{i} +
+12K + \frac{64\log{(\frac{T\Delta_i^2}{K})}}{\Delta_{i}} \bigg\rbrace \\
+%%%%%%%%%%%%%%%%%
+&+ \sum\limits_{\substack{i\in A_{s^{*}},\\ \Delta_{i} > b}} 
+16K+\sum\limits_{\substack{i\in A_{s^{*}},\\0 < \Delta_{i}\leq b}} 16K + \sum_{\substack{i\in A\setminus A_{s^*}:\\\Delta_{i}> b}}32K +\sum_{\substack{i\in A \setminus A_{s^*}:\\ 0 < \Delta_{i} \leq b}}32K 
+ \!+\! \max\limits_{i:\Delta_{i}\leq b}\Delta_{i}T
+\end{align*}
+
+Now we know from \cite{bubeck2011pure} that the function $x\in [0,1]\mapsto x\exp(-Cx^2)$ is  decreasing on $\left[\dfrac{1}{\sqrt{2C}},1\right ]$ for any $C>0$. So, taking $C=\left\lfloor \dfrac{T}{e}\right\rfloor$ and by choosing  $\Delta_{i}=\Delta=\sqrt{\dfrac{K\log K}{T}}>\sqrt{\dfrac{e}{T}}$ for all ${i:i\neq *}\in A$ and substituting $p=\left\lceil \dfrac{K}{\log K}\right\rceil $ in the bound of ClusUCB we get,
+
+	\begin{align*}
+	\sum_{i\in A_{s^{*}}:\Delta_{i} > b} 12K =12\dfrac{K^2}{p}
+	\end{align*}		
+	 Similarly, for the term, 
+	 \begin{align*}
+	 \sum_{i\in A:\Delta_{i} > b} 12K = 12 K^2
+	 \end{align*}
+	 
+	
+	For the term regarding number of pulls,
+	\begin{align*}
+	\sum_{i\in A:\Delta_{i} > b}\dfrac{64\log{(\frac{T\Delta_i^2}{K})}}{\Delta_{i}} &\leq  \dfrac{64K\sqrt{T}\log{(T\dfrac{K\log K}{T K})}}{\sqrt{K\log K}} \leq  \dfrac{64\sqrt{KT}\log{(\log K)}}{\sqrt{\log K}}\\
+	%%%%%%%%%%%%%%%%%%%%%%%
+	&\overset{(a)}{\leq} 64\sqrt{KT}
+	\end{align*}		
+	
+	Here $(a)$ is obtained by the identity $\dfrac{\log\log K}{\sqrt{\log K}} < 1$ for $K\geq 2$. Lastly we can bound the error terms as, 
+	\begin{align*}
+	\sum\limits_{i\in A_{s^{*}}:0\leq\Delta_{i}\leq b} 16K =\dfrac{16K^2}{p} \overset{<}{(a)} 16K\log K
+	\end{align*}	 	
+ 	Here we obtain $(a)$ by substituting the value of $p$. Similarly for the term,
+ 	\begin{align*}
+ 	\sum_{i\in A\setminus A_{s^*}: \Delta_{i} > b} 16K =\dfrac{16K^2}{p} < 16K\log K
+	\end{align*} 	
+	Also, for all $b\geq \sqrt{\dfrac{e}{T}}$,
+	\begin{align*}
+ 	\sum_{i\in A\setminus A_{s^*}: 0 < \Delta_{i} \leq b} 32K = \left(K-\dfrac{K}{p}\right) 32K
+	\end{align*} 	
+	
+	Now, $K-\dfrac{K}{p}= K\left( \dfrac{p-1}{p} \right) < K\left(  \dfrac{\frac{K}{\log K}+1-1}{\frac{K}{\log K}+1 }\right) < \dfrac{K^2}{K+\log K}$. So, after substituting the value of $p=\left\lceil \dfrac{K}{\log K} \right\rceil$, we get,
+	
+	\begin{align*}
+ 	\sum_{i\in A\setminus A_{s^*}: 0 < \Delta_{i} \leq b} 32K = \left(K-\dfrac{K}{p}\right)32K < \dfrac{32 K^3}{K+\log K}
+	\end{align*} 	
+	
+	Summing up all the contribution from the individual cases as shown above, the total gap-independent regret is given by,	
+	
+	\begin{align*}
+	\E[R_{T}]\leq & 12K\log K + 32\sqrt{KT} + 12K^2 + 64\sqrt{KT} + 32K\log K  \dfrac{64 K^3}{K+\log K}
+	\end{align*}
+ 	
+	So, the total bound for using both arm and cluster elimination cannot be worse than,
+	
+	\begin{align*}
+	\E[R_{T}]\leq 96\sqrt{KT} + 12K^2 + 44K\log K + \dfrac{64 K^3}{K+\log K}\\ 
+	\end{align*}		
+\end{proof}
+
+%\section{Why Clustering?}
+%\label{App:E}
+%
+%In this section we want to specify the apparent use of clustering. The error bounds are shown in Table \ref{App:E:table:3}.
+%
+%\begin{table}[!h]
+%\caption{Error Bound}
+%\label{App:E:table:3}
+%\begin{center}
+%\begin{tabular}{p{1.4cm}p{10.3cm}p{3.5cm}}
+%\multicolumn{1}{c}{\bf Elim Type} &\multicolumn{1}{c}{\bf Error Bound} &\multicolumn{1}{c}{\bf Remarks} \\
+%\hline \\
+%Only Arm Elimination (ClusUCB-AE)	& \begin{align*}\underbrace{\sum_{i\in A:\Delta_{i} > b}\bigg(\dfrac{C_{2}(\rho_{a})T^{1-\rho_{a}}}{\Delta_{i}^{4\rho_{a} -1}} \bigg)}_{\text{Case b2, Proposition \ref{proofTheorem:Prop:1}}} + \underbrace{\sum_{i\in A:0 < \Delta_{i}\leq b}\bigg( \dfrac{C_{2}(\rho_{a})T^{1-\rho_{a}}}{b^{4\rho_{a} -1}} \bigg)}_{\text{Case b2, Proposition \ref{proofTheorem:Prop:1}}}\end{align*}  & With $\rho_{a}=\frac{1}{2},$ and $\psi=\frac{T}{196 \log K}$ this gives $300\sqrt{KT}+300\sqrt{KT\log K}$. Hence, this has an order of $O(\sqrt{KT\log K})$.\\
+%\hline\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Arm \& Cluster Elimination (ClusUCB) 	& \begin{align*}  \underbrace{\sum_{i\in A_{s^{*}}:\Delta_{i} > b}\bigg(\dfrac{C_{2}(\rho_{a})T^{1-\rho_{a}}}{\Delta_{i}^{4\rho_{a}-1}} \bigg)+ \sum_{i\in A_{s^{*}}:0\leq\Delta_{i}\leq b}\bigg(\dfrac{C_{2}(\rho_{a})T^{1-\rho_{a}}}{b^{4\rho_{a} -1}} \bigg)}_{\text{Case b2, Arm Elim, Theorem \ref{Result:Theorem:1}}}\\   
+% + \underbrace{\sum_{i\in A\setminus A_{s^*}:\Delta_{i} > b}\bigg(\dfrac{2C_{2}(\rho_{s})T^{1-\rho_{s}}}{\Delta_{i}^{4\rho_{s}-1}} \bigg)+ \sum_{i\in A\setminus A_{s^*}:0\leq\Delta_{i}\leq b}\bigg(\dfrac{2C_{2}(\rho_{s})T^{1-\rho_{s}}}{b^{4\rho_{s} -1}} \bigg)}_{\text{Case b3+b4, Clus Elim, Theorem \ref{Result:Theorem:1}}} \end{align*} & With $\rho_{a}=\frac{1}{2}$, $\rho_{s}=\frac{1}{2}, p=\lceil \frac{K}{\log K}\rceil$ and $\psi=\frac{T}{196 \log K}$ this gives $\frac{300 \sqrt{T}\log K^{\frac{3}{2}} }{\sqrt{K}} + \frac{300 \sqrt{T}\log K}{\sqrt{K}} + 600 \frac{K}{K+\log K}\sqrt{KT\log K} + 600 \frac{K}{K+\log K}\sqrt{KT}$. So we can reduce the error bound to $O(\frac{K}{K+\log K}\sqrt{KT\log K})$.\\
+%\hline
+%\end{tabular}
+%\end{center}	
+%\end{table}
+%
+%While looking at the error terms in Table~\ref{App:E:table:3}, we see that using just arm elimination (ClusUCB-AE) the elimination error bound is more than using both arm and cluster  elimination simultaneously (ClusUCB). 
+

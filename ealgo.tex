@@ -1,0 +1,132 @@
+%%%%%%%%%%%%%%%% alg-custom-block %%%%%%%%%%%%
+\algblock{ArmElim}{EndArmElim}
+\algnewcommand\algorithmicArmElim{\textbf{\em Arm Elimination}}
+ \algnewcommand\algorithmicendArmElim{}
+\algrenewtext{ArmElim}[1]{\algorithmicArmElim\ #1}
+\algrenewtext{EndArmElim}{\algorithmicendArmElim}
+
+\algblock{ClusElim}{EndClusElim}
+\algnewcommand\algorithmicClusElim{\textbf{\em Cluster Elimination}}
+ \algnewcommand\algorithmicendClusElim{}
+\algrenewtext{ClusElim}[1]{\algorithmicClusElim\ #1}
+\algrenewtext{EndClusElim}{\algorithmicendClusElim}
+\algtext*{EndArmElim}
+\algtext*{EndClusElim}
+
+\algblock{ResParam}{EndResParam}
+\algnewcommand\algorithmicResParam{\textbf{\em Reset Parameters}}
+ \algnewcommand\algorithmicendResParam{}
+\algrenewtext{ResParam}[1]{\algorithmicResParam\ #1}
+\algrenewtext{EndResParam}{\algorithmicendResParam}
+
+
+\begin{algorithm}[!h]
+\caption{ClusUCB}
+\label{alg:clusucb}
+\begin{algorithmic}
+\State {\bf Input:} Number of clusters $p$, time horizon $T$, exploration parameters $\rho_a$, $\rho_s$ and $\psi$.
+\State {\bf Initialization:} Set $B_{0}:=A$, $S_0 = S$ and $\epsilon_{0}:=1$.
+\State Create a partition $S_0$ of the arms at random into $p$ clusters of size up to $\ell=\bigg\lceil \dfrac{K}{p} \bigg\rceil$ each.
+\For{$m=0,1,..\big \lfloor \dfrac{1}{2}\log_{2} \dfrac{7T}{K}\big\rfloor$}	
+\State Pull each arm in $B_m$ so that the total number of times it has been pulled is $n_{m}=\bigg\lceil\dfrac{2\log{(\psi T\epsilon_{m}^{2})}}{\epsilon_{m}}\bigg\rceil$. 
+% A partition of $A$ into clusters from Algorithm \ref{alg:rua}
+%\State \hspace*{2em} Calculate $w_{s_{i}}=\bigg\lceil\dfrac{1}{\ell\hat{\Delta}_{s_{i}}}\bigg\rceil$,if $\hat{\Delta}_{s_{i}}\neq 0, \forall s_{i}\in S$
+%\newline\hspace*{8em}$=1$, otherwise, and $\hat{\Delta}_{s_{i}}=\max_{i\in s_{i}}{\lbrace\hat{r}_{i}\rbrace}-\min_{j\in s_{i}}{\lbrace\hat{r}_{j}\rbrace}, i\neq j$
+\ArmElim
+\State For each cluster $s_k \in S_{m}$, delete arm ${i}\in s_{k}$ from $B_{m}$ if
+\begin{align*}
+\hat{r}_{i} + \sqrt{\dfrac{\rho_{a}\log{(\psi T\epsilon_{m}^{2})}}{2 n_{m}}}  < \max_{{j}\in s_{k}}\bigg\lbrace\hat{r}_{j} -\sqrt{\dfrac{\rho_{a}\log{(\psi T\epsilon_{m}^{2})}}{2 n_{m}}} \bigg\rbrace
+\end{align*}
+% where $\rho_{a}=\dfrac{1}{w_{m}}$ and remove all such arms from $B_{m}$.
+\EndArmElim
+\ClusElim
+\State Delete cluster $s_{k}\in S_{m}$ and remove all arms $i\in s_{k}$ from $B_{m}$ if 
+\begin{align*}
+ \max_{{i}\in s_{k}}\bigg\lbrace\hat{r}_{i} + \sqrt{\dfrac{\rho_{s}\log{(\psi T\epsilon_{m}^{2})}}{2 n_{m}}}\bigg\rbrace  < \max_{{j}\in B_{m}} \bigg\lbrace\hat{r}_{j} - \sqrt{\dfrac{\rho_{s} \log{(\psi T\epsilon_{m}^{2})}}{2 n_{m}}}\bigg\rbrace.
+\end{align*}
+%  and remove all such arms in the cluster $s_{k}$ from $B_{m}$ to obtain $B_{m+1}$.
+\EndClusElim
+\State Set $\epsilon_{m+1}:=\dfrac{\epsilon_{m}}{2}$\vspace{0.5ex}
+\State Set $B_{m+1}:=B_{m}$
+%\State \hspace*{2em} $\ell_{m+1}:=\min\lbrace 2\ell_{m}, K\rbrace$
+%\State \hspace*{2em} $w_{m+1}:=2w_{m}$
+\State Stop if $|B_{m}|=1$ and pull ${i}\in B_{m}$ till $T$ is reached.
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+
+
+%\begin{algorithm}[!h]
+%\caption{EClusUCB}
+%\label{alg:eclusucb}
+%\begin{algorithmic}
+%\State {\bf Input:} Number of clusters $p$, time horizon $T$, exploration parameters $\rho_a$, $\rho_s$ and $\psi$.
+%\State {\bf Initialization:} Set $m:=0$, $B_{0}:=A$, $S_0 = S$, $\epsilon_{0}:=1$, $M=\big \lfloor \frac{1}{2}\log_{2} \frac{14T}{K}\big\rfloor$, $n_{0}=\bigg\lceil\frac{\log{(\psi T\epsilon_{0}^{2})}}{2\epsilon_{0}}\bigg\rceil$ and  $N_{0}=Kn_{0}$.
+%\State Create a partition $S_0$ of the arms at random into $p$ clusters of size up to $\ell=\bigg\lceil \frac{K}{p} \bigg\rceil$ each.
+%\State Pull each arm once
+%\For{$t=K+1,..,T$}	
+%\State Pull arm $i\in \argmax_{j\in B_{m}}\bigg\lbrace \hat{r}_{j} + \sqrt{\frac{\rho_{s}\log{(\psi T\epsilon_{m}^{2})}}{2 z_{j}}} \bigg\rbrace$, where $z_j$ is the number of times arm $j$ has been pulled
+%\State $t:=t+1$
+%\ArmElim
+%\State For each cluster $s_k \in S_{m}$, delete arm ${i}\in s_{k}$ from $B_{m}$ if
+%\begin{align*}
+%\hat{r}_{i} + \sqrt{\frac{\rho_{a}\log{(\psi T\epsilon_{m}^{2})}}{2 n_{m}}}  < \max_{{j}\in s_{k}}\bigg\lbrace\hat{r}_{j} -\sqrt{\frac{\rho_{a}\log{(\psi T\epsilon_{m}^{2})}}{2 n_{m}}} \bigg\rbrace
+%\end{align*}
+%% where $\rho_{a}=\frac{1}{w_{m}}$ and remove all such arms from $B_{m}$.
+%\EndArmElim
+%\ClusElim
+%\State Delete cluster $s_{k}\in S_{m}$ and remove all arms $i\in s_{k}$ from $B_{m}$ if 
+%\begin{align*}
+% \max_{{i}\in s_{k}}\left\lbrace\hat{r}_{i} + \sqrt{\frac{\rho_{s}\log{(\psi T\epsilon_{m}^{2})}}{2 n_{m}}}\right\rbrace 
+% < \max_{{j}\in B_{m}} \left\lbrace\hat{r}_{j} - \sqrt{\frac{\rho_{s} \log{(\psi T\epsilon_{m}^{2})}}{2 n_{m}}}\right\rbrace.
+%\end{align*}
+%%  and remove all such arms in the cluster $s_{k}$ from $B_{m}$ to obtain $B_{m+1}$.
+%\EndClusElim
+%
+%\If{$t\geq N_{m}$ and $m\leq M$}
+%\ResParam
+%\State $\epsilon_{m+1}:=\frac{\epsilon_{m}}{2}$\vspace{0.5ex}
+%\State $B_{m+1}:=B_{m}$
+%\State $n_{m+1}:=\bigg\lceil\frac{\log{(\psi T\epsilon_{m+1}^{2})}}{2\epsilon_{m+1}}\bigg\rceil$
+%\State $N_{m+1}:=t+|B_{m+1}| n_{m+1}$
+%\State $m:=m+1$
+%\EndResParam
+%\State Stop if $|B_{m}|=1$ and pull ${i}\in B_{m}$ till $T$ is reached.
+%\EndIf
+%\EndFor
+%\end{algorithmic}
+%%\vspace*{-0.42em}
+%\end{algorithm}
+%\vspace*{-0.42em}
+\textbf{2.1 Notations:} We denote the set of arms by $A$, with the individual arms labeled $i, i=1,\ldots,K$. We denote an arbitrary round of EClusUCB by $m$. We denote an arbitrary cluster by $s_{k}$, the subset of arms within the cluster $s_k$ by  $A_{s_{k}}$ and the set of clusters by $S$ with $|S|=p\leq K$. Here $p$ is a pre-specified limit for the number of clusters.
+For simplicity, we assume that the optimal arm is unique and denote it by ${*}$, with $s^{*}$ denoting the corresponding cluster. The true best arm in a cluster $s_{k}$ is denoted by $a_{max_{s_{k}}}$.  
+We denote the sample mean of the rewards seen so far for arm $i$ by $\hat{r_i}$ and for the true best arm within a cluster $s_k$ by $\hat{r}_{a_{\max_{s_{k}}}}$. $z_i$ is the number of times an arm $i$ has been pulled. We assume the rewards of all arms are bounded in $[0,1]$.
+
+\textbf{2.2 The algorithm.} As mentioned in a recent work \cite{liu2016modification}, UCB-Improved has two shortcomings: 	\\
+\begin{inparaenum}[\bfseries(i)]
+\item A significant number of pulls are spent in early exploration, since each round $m$ of UCB-Improved involves pulling every arm an identical $n_{m}=\left\lceil \frac{ 2\log(T\epsilon^{2}_{m})}{\epsilon^{2}_{m}} \right\rceil$ number of times. The quantity $\epsilon_{m}$ is initialized to $1$ and halved after every round.\\
+\item In UCB-Improved, arms are eliminated conservatively, i.e, only after $\epsilon_{m}<\frac{\Delta_{i}}{2}$, the sub-optimal arm $i$ is discarded with high probability. This is disadvantageous when $K$ is large and the gaps are identical ($r_{1}=r_{2}=\cdots=r_{K-1}<r^{*}$) and small.\\
+\end{inparaenum}
+To reduce early exploration, the number of pulls $n_m$ allocated to each arm per round in EClusUCB is lower than that of UCB-Improved and also that of Median-Elimination, which used $n_m=\frac{4}{\epsilon^{2}}\log\big(\frac{3}{\delta}\big)$, where $\epsilon,\delta$ are confidence parameters.
+To handle the second problem mentioned above, EClusUCB partitions the larger problem into several small sub-problems using clustering and then performs local exploration aggressively to eliminate sub-optimal arms within each clusters with high probability.
+
+As described in the pseudocode in Algorithm~\ref{alg:eclusucb}, EClusUCB begins with an initial clustering of arms that is performed by random uniform allocation. The set of clusters $S$ thus obtained satisfies $|S|=p$, with individual clusters having a size that is bounded above by $\ell=\left\lceil \frac{K}{p} \right\rceil$.
+Each timestep of EClusUCB involves both individual arm as well as cluster elimination conditions. These elimination conditions are inspired by UCB-Improved. Notice that, unlike UCB-Improved, there is no longer a single point of reference based on which we are eliminating arms. Instead we now have as many reference points to eliminate arms as number of clusters formed. 
+%Further, the exploration factors $\rho_{a}\in (0,1]$ and $\rho_{s}\in (0,1]$ governing the arm and cluster elimination conditions, respectively, are relatively more aggressive than that in UCB-Improved. 
+In EClusUCB we also introduce the idea of optimistic greedy sampling similar to \cite{liu2016modification} which they used to modify the UCB-Improved algorithm. In optimistic greedy sampling, we only sample the arm with the highest upper confidence bound in each timestep. We further modify the idea by introducing clustering and arm elimination parameters. EClusUCB checks arm and cluster elimination conditions in every timestep and update parameters when a round is complete. It divides each round into $|B_{m}|n_{m}$ timesteps so that each surviving arms can be allocated atmost $n_{m}$ pulls. The exploration regulatory factor $\psi$ governing the arm and cluster elimination conditions in EClusUCB is more aggressive than that in UCB-Improved. With appropriate choices of $\psi$, $\rho_a$ and $\rho_s$, we can achieve aggressive elimination even when the gaps $\Delta_i$ are small and $K$ is large. Also we use different exploration regulatory factor than \cite{liu2016modification} and we come up with a cumulative regret bound whereas \cite{liu2016modification} only gives simple regret bound for the CCB algorithm. 
+
+
+%and the gaps $\Delta_i$ are small, it is efficient to remove sub-optimal arms quickly. 
+
+In \cite{liu2016modification}, the authors recommend incorporating a factor of $d_i$ inside the log-term of the UCB values, i.e., $\max \lbrace\hat{r}_{i}+\sqrt{\frac{d_{i}\log T{\epsilon}_{m}^{2}}{2n_{m}}}\rbrace$. 
+The authors there examine the following choices for $d_i$: $\frac{T}{z_{i}}$, $\frac{\sqrt{T}}{z_{i}}$ and $\frac{\log T}{z_{i}}$, where $z_{i}$ is the number of times an arm ${i}$ has been sampled.
+Unlike \cite{liu2016modification}, we employ cluster as well as arm elimination and establish from a theoretical analysis that the choice $\psi=\frac{T}{196\log (K)}$ helps in achieving a better gap-dependent regret upper bound for EClusUCB as compared to UCB-Improved and MOSS (Corollary \ref{Result:Corollary:1}). 
+
+	We also introduce the algorithm Adaptive ClusUCB\footnote{Adaptive ClusUCB (AClusUCB) which estimates the clusters based on hierarchical clustering is introduced in Appendix \ref{App:AClusUCB}. An empirical study comparing its performance to EClusUCB is presented in experiment $5$, in Appendix \ref{App:MoreExp}.} in Appendix \ref{App:AClusUCB}.
+
+%In ClusUCB we modified UCB-Improved to reduce early exploration and do faster elimination of sub-optimal arms and clusters with the help of clustering and careful choosing of exploration parameters  $\psi$, $\rho_{a}$ and $\rho_{s}$. 
+%One principal disadvantage with ClusUCB is that it is a round-based algorithm. %which samples all remaining arms equally in each round (still less compared to UCB-Improved). 
+%In this section, we introduce a further modification, as shown in Algorithm \ref{alg:eclusucb} called Efficient Clustered UCB or
+
+%\textbf{2.3 Adaptive Clustered UCB}: One of the disadvantages of EClusUCB is that it requires the knowledge of the number of clusters $p$. To counter this we introduce Adaptive Clustered UCB or AClusUCB which employs hierarchical clustering to estimate the clusters on-the-fly and is shown in Appendix \ref{App:AClusUCB}.

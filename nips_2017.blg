@@ -1,0 +1,45 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: nips_2017.aux
+The style file: apalike.bst
+Database file #1: biblio.bib
+You've used 29 entries,
+            1935 wiz_defined-function locations,
+            636 strings with 8058 characters,
+and the built_in function-call counts, 12357 in all, are:
+= -- 1253
+> -- 442
+< -- 25
++ -- 159
+- -- 144
+* -- 971
+:= -- 2042
+add.period$ -- 90
+call.type$ -- 29
+change.case$ -- 216
+chr.to.int$ -- 28
+cite$ -- 29
+duplicate$ -- 522
+empty$ -- 897
+format.name$ -- 191
+if$ -- 2510
+int.to.chr$ -- 2
+int.to.str$ -- 0
+missing$ -- 29
+newline$ -- 148
+num.names$ -- 87
+pop$ -- 221
+preamble$ -- 1
+purify$ -- 217
+quote$ -- 0
+skip$ -- 405
+stack$ -- 0
+substring$ -- 919
+swap$ -- 115
+text.length$ -- 11
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 172
+warning$ -- 0
+while$ -- 108
+width$ -- 0
+write$ -- 374

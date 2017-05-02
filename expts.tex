@@ -1,0 +1,171 @@
+We conduct an empirical performance using cumulative regret as the metric. We implement the following algorithms:  KL-UCB\cite{garivier2011kl}, MOSS\cite{audibert2009minimax}, UCB1\cite{auer2002finite}, UCB-Improved\cite{auer2010ucb}, Median Elimination\cite{even2006action}, Thompson Sampling(TS)\cite{agrawal2011analysis}, OCUCB\cite{lattimore2015optimally}, Bayes-UCB(BU)\cite{kaufmann2012bayesian} and UCB-V\cite{audibert2009exploration}\footnote{The implementation for KL-UCB, Bayes-UCB and DMED were taken from \cite{CapGarKau12}}. The parameters of EClusUCB algorithm for all the experiments are set as follows: $\psi=\frac{T}{K^2}$, $\rho_{s}=0.5$, $\rho_{a}=0.5$ and $p=\lceil\frac{K}{\log K}\rceil$ (as in Corollary \ref{Result:Corollary:1}).
+%whereas for ClusUCB(Aggressive)$\big/$EClusUCB(Aggressive) or ClusUCBA$\big/$EClusUCBA algorithm the parameters are set as $\psi=\log T$, $\rho_{s}=0.5$, $\rho_{a}=0.5$ and $p=\lceil\frac{K}{\log K}\rceil$. We can clearly see that EClusUCBA has a lower exploration regulatory factor and conducts less exploration and is a riskier algorithm than EClusUCB.
+%DMED\cite{honda2010asymptotically}
+
+\begin{figure}[!h]
+    \centering
+    \begin{tabular}{cc}
+    \setlength{\tabcolsep}{0.1pt}
+    \subfigure[0.25\textwidth][Expt-$1$: $20$ Bernoulli-distributed arms.]
+    %with $r_{i_{{i}\neq {*}}}=0.07$ and $r^{*}=0.1$
+    {
+    		\pgfplotsset{
+		tick label style={font=\Huge},
+		label style={font=\Huge},
+		legend style={font=\Large},
+		ylabel style={yshift=32pt},
+		%legend style={legendshift=32pt},
+		}
+        \begin{tikzpicture}[scale=0.4]
+      	\begin{axis}[
+		xlabel={timestep},
+		ylabel={Cumulative Regret},
+		grid=major,
+        %clip mode=individual,grid,grid style={gray!30},
+        clip=true,
+        %clip mode=individual,grid,grid style={gray!30},
+  		legend style={at={(0.5,1.5)},anchor=north, legend columns=3} ]
+      	% UCB
+		\addplot table{results/NewExpt1/Expt1/UCBV01_comp_subsampled.txt};
+		%\addplot table{results/NewExpt/Expt1/EclUCB01_1_comp_subsampled.txt};
+		\addplot table{results/NewExpt1/Expt1/NEclUCB01_comp_subsampled.txt};
+		\addplot table{results/NewExpt1/Expt1/KLUCB01_comp_subsampled.txt};
+		\addplot table{results/NewExpt1/Expt1/MOSS01_comp_subsampled.txt};
+		%\addplot table{results/NewExpt1/Expt1/DMED01_comp_subsampled.txt};
+		\addplot table{results/NewExpt1/Expt1/UCB01_comp_subsampled.txt};
+		\addplot table{results/NewExpt1/Expt1/TS01_comp_subsampled.txt};
+		\addplot table{results/NewExpt1/Expt1/OCUCB01_comp_subsampled.txt};
+		\addplot table{results/NewExpt1/Expt1/BU01_comp_subsampled.txt};
+      	%\legend{UCB-V,EClusUCB,KL-UCB,MOSS,DMED,UCB1,TS,OCUCB,BU} 
+      	\legend{UCB-V,EClusUCB,KL-UCB,MOSS,UCB1,TS,OCUCB,BU}      	
+      	\end{axis}
+      	\end{tikzpicture}
+  		\label{fig:1}
+    }
+    &
+    \subfigure[0.25\textwidth][Expt-$2$: $100$ Gaussian-distributed arms. ]
+    %with $r_{i_{{i}\neq {*}:1-33}}=0.1$, $r_{i_{{i}\neq {*}:34-99}}=0.6$, $r^{*}_{i=100}=0.9$ and $\sigma_{i=1:100}^{2} = 0.3$
+    {
+    		\pgfplotsset{
+		tick label style={font=\Huge},
+		label style={font=\Huge},
+		legend style={font=\Large},
+		ylabel style={yshift=32pt},
+		}
+        \begin{tikzpicture}[scale=0.4]
+        \begin{axis}[
+		xlabel={timestep},
+		ylabel={Cumulative Regret},
+        %clip mode=individual,grid,grid style={gray!30},
+       	grid=major,
+       	clip=true,
+  		legend style={at={(0.5,1.5)},anchor=north, legend columns=3} ]
+      	% UCB
+        \addplot table{results/NewExpt1/Expt2/UCB01_comp_subsampled.txt};
+		%\addplot table{results/NewExpt/Expt2_2/clUCB01_comp_subsampled.txt};
+		\addplot table{results/NewExpt1/Expt2/NEclUCB01_comp_subsampled.txt};
+		\addplot table{results/NewExpt1/Expt2/MOSS01_comp_subsampled.txt};
+		\addplot table{results/NewExpt1/Expt2/OCUCB01_comp_subsampled.txt};
+		%\addplot table{results/NewExpt1/Expt2/MedElim01_comp_subsampled.txt};
+		\addplot table{results/NewExpt1/Expt2/TS01_comp_subsampled.txt};
+		%\addplot table{results/NewExpt1/Expt2/UCBR01_comp_subsampled.txt};
+		%\addplot table{results/NewExpt/Expt2_2/EclUCB01_p_1_comp_subsampled.txt};
+		%\legend{UCB1,ClusUCB,Med-Elim,MOSS,OCUCB,EClusUCB,UCB-Imp}
+		\legend{UCB1,EClusUCB,MOSS,OCUCB,TS}
+      	\end{axis}
+      	\end{tikzpicture}
+   		\label{fig:2}
+    }
+    \end{tabular}
+    \caption{Cumulative regret for various bandit algorithms on two stochastic K-armed bandit environments. }
+    \label{fig:karmed}
+    \vspace*{-1em}
+\end{figure}
+% For the purpose of performance comparison
+
+
+\textbf{First experiment (Bernoulli with small gaps) :} This is conducted over a testbed of $20$ arms in an environment involving Bernoulli reward distributions with expected rewards of the arms $r_{i_{{i}\neq {*}}}=0.07$ and $r^{*}=0.1$. These type of cases are frequently encountered in web-advertising domain. The horizon $T$ is set to $60000$. 
+%After limited exploratory experimentation the number of clusters $p$ for ClusUCB is set to $4$. 
+The regret is averaged over $100$ independent runs and is shown in Figure \ref{fig:1}. EClusUCB, MOSS, UCB1, UCB-V, KL-UCB, TS, BU and DMED are run in this experimental setup and we observe that EClusUCB performs better than all the aforementioned algorithms except TS. Because of the small gaps and short horizon $T$, we do not implement UCB-Improved and Median Elimination on this test-case. 
+%We also observe that in this case the cumulative regret of EClusUCB and TS are almost similar to each other.
+
+\textbf{Second experiment (Gaussian with different variances):} This is conducted over a testbed of $100$ arms involving Gaussian reward distributions with expected rewards of the arms $r_{1:33}=0.7$, $r_{34:99}=0.8$ and $r^{*}_{100}=0.9$ with variance set at $\sigma_{1:33}^{2} = 0.7,\sigma_{34:99}^{2} = 0.1$ and $r^{*}_{100}=0.7$. The horizon $T$ is set for a large duration of $3\times 10^{5}$ and the regret is averaged over $100$ independent runs and is shown in Figure \ref{fig:2}. From the results in Figure \ref{fig:2}, we observe that EClusUCB outperforms MOSS, UCB1, UCB-Improved and Median-Elimination($\epsilon=0.1,\delta=0.1$). Also the performance of UCB-Improved is poor in comparison to other algorithms, which is probably because of pulls wasted in initial exploration whereas EClusUCB with the choice of $\psi, \rho_{a}$ and $\rho_{s}$ performs much better. Note that the performance of TS is poor and this is in line with the observation in \cite{lattimore2015optimally} that the worst case regret of TS in Gaussian distributions is $\Omega\left( \sqrt{KT\log T}\right)$.
+
+\begin{figure}[!h]
+    \centering
+    \begin{tabular}{cc}
+    \subfigure[0.32\textwidth][Expt-$3$: $20$ to $100$ Bernoulli-distributed arms. ]
+    %with $r_{i_{{i}\neq {*}}}=0.05$ and $r^{*}=0.1$
+    {
+    	\pgfplotsset{
+		tick label style={font=\Huge},
+		label style={font=\Huge},
+		legend style={font=\Large},
+		ylabel style={yshift=32pt},
+		}
+        \begin{tikzpicture}[scale=0.4]
+        \begin{axis}[
+		xlabel={Arms},
+		ylabel={Cumulative Regret},
+        %clip mode=individual,grid,grid style={gray!30},
+		grid=major,
+		clip=true,
+  		legend style={at={(0.5,1.3)},anchor=north, legend columns=3} ]
+        % UCB
+		\addplot table{results/NewExpt/Expt3_1/plotFinalMOSS20_100.txt};
+		\addplot table{results/NewExpt/Expt3_1/plotFinalFEclUCB20_100.txt};
+		\addplot table{results/NewExpt/Expt3_1/plotFinalOCUCB20_100.txt};
+      	\legend{MOSS,EClusUCB,OCUCB}
+      	\end{axis}
+        \end{tikzpicture}
+        \label{fig:3}
+    }
+    &
+    \subfigure[0.32\textwidth][Expt-$4$: Different cluster experiment]
+    {
+    		\pgfplotsset{
+		tick label style={font=\Huge},
+		label style={font=\Huge},
+		legend style={font=\Large},
+		ylabel style={yshift=32pt},
+		}
+        \begin{tikzpicture}[scale=0.4]
+      	\begin{axis}[
+		ylabel={Cumulative Regret},
+		xlabel={Clusters},
+		grid=major,
+        %clip mode=individual,grid,grid style={gray!30},
+        clip=true,
+        %clip mode=individual,grid,grid style={gray!30},
+  		legend style={at={(0.5,1.3)},anchor=north, legend columns=3} ]
+      	% UCB
+		%\addplot table{results/NewExpt/Expt4/plotFinalAclUCB012.txt};
+		\addplot table{results/NewExpt/Expt4/plotFinalFEclUCB02.txt};
+		%\addplot table{results/NewExpt/Expt4/plotFinalEclUCB_AE012.txt};
+      	%\legend{EClusUCBA,AClusUCBA,EClusUCB,AClusUCB} 
+      	\legend{EClusUCB} 
+      	\end{axis}
+      	\draw [red,thick] (.61,5.25) circle (0.3 cm);
+      	code={
+        \node[black,above] at (axis cs:3.0,4.27){\tiny{EClusUCB-AE}};
+    		}
+      	\end{tikzpicture}
+  		\label{fig:4}
+    }
+	\end{tabular}
+	\label{fig:furtherExpt1}
+    \caption{Cumulative regret and choice of parameter $p$}
+    \vspace*{-1em}
+\end{figure}
+%\vspace*{-0.5em}
+\textbf{Third experiment (Large Horizon and uniform gaps):} This is conducted over a testbed of $20-100$ (interval of $10$) arms with Bernoulli reward distributions, where the expected rewards of the arms are $r_{i_{{i}\neq {*}}}=0.05$ and $r^{*}=0.1$. For each of these testbeds of $20-100$ arms, we report the cumulative regret over a large horizon $T=10^{5} + K_{20:100}^{3}$ timesteps averaged over $100$ independent runs. We report the performance of MOSS, OCUCB and EClusUCB only over this uniform gap setup. Algorithms like Thompson Sampling or Bayes-UCB are too slow to be run for such large $K$ (see \cite{lattimore2015optimally}). From the results in Figure \ref{fig:3}, it is evident that the growth of regret for EClusUCB is lower than that of OCUCB and nearly same as MOSS. This corroborates the finding of \cite{lattimore2015optimally} which states that MOSS breaks down only when the number of arms are exceptionally large or the horizon is unreasonably high and gaps are very small. We consistently see that in uniform gap testcases EClusUCB outperforms  OCUCB.
+
+%The horizon $T$ is set to a very large value of $10^{5} + K^{3}$ timesteps and the number of arms are increased from $K=20$ to $100$.
+%The proposed algorithm EClusUCB is run with same parameters as established in Corollary  \ref{Result:Corollary:2}. The regret is averaged over $100$ independent runs and is shown in Figure \ref{fig:3}. We report the performance of MOSS, OCUCB and EClusUCB only over this setup. From the results in Figure \ref{fig:3}, it is evident that the growth of regret for EClusUCB is lower than that of OCUCB and nearly same as MOSS. This corroborates the finding of \citet{lattimore2015optimally} as well, which says that MOSS breaks down only when the number of arms are exceptionally large or the horizon is unreasonably high and gaps are very small. This experiment also proves that our algorithm EClusUCB is stable for a large horizon and large number of arms.
+%\vspace*{-0.5em}
+\textbf{Fourth experiment (Choice of Cluster):} This is conducted to show that our choice of $p=\lceil\frac{K}{\log K}\rceil$ which we use to reduce the elimination error, is indeed close to optimal. The experiment is performed over a testbed having $30$ Bernoulli-distributed arms with $r_{i_{:{{i}\neq {*}}}}=0.07,\forall i\in A$ and $r^{*}=0.1$ averaged over 100 independent runs for each cluster. In Figure \ref{fig:4}, we report the cumulative regret over $T=80000$ timesteps averaged over $100$ independent runs plotted against the number of clusters $p=1$ to $\frac{K}{2}$ (so that each cluster have exactly two arms). We see that for $p=\lceil\frac{K}{\log K}\rceil=9$, the cumulative regret of EClusuCB is almost the lowest over the entire range of clusters considered. So, the choice of $p=\lceil\frac{K}{\log K}\rceil$ helps to balance both theoretical and empirical performance of EClusUCB. Also $p=1$ gives us EClusUCB-AE and we can clearly see that its cumulative regret is the highest among all the clusters considered showing clearly that clustering indeed has some benefits. Its poor performance stems from the fact that it eliminates optimal arm in many of the runs as opposed to EClusUCB. More experiments are shown in Appendix \ref{App:MoreExp}.
+
+%The lowest is reached for $\frac{K}{2}=15$, but this would increase the elimination error of EClusUCB in our theoretical analysis.
+
+
+%Also, we show cumulative regret for AClusUCB (which does not have $p$ as an input parameter) as a straight line, constant over the number of clusters. AClusUCB  performs poorly as compared to EClusUCB. We conjecture that this happens because AClusUCB conducts a significant amount of initial exploration to find the number of clusters or waits till the optimal arm settles in its own cluster which will eliminate all the other clusters by cluster elimination condition, as opposed to EClusUCB which has an uniform clustering scheme from the very start.

@@ -1,0 +1,17 @@
+We denote the set of arms by $A$, with the individual arms labeled $i, i=1,\ldots,K$.
+We denote an arbitrary round of ClusUCB by $m$. We denote an arbitrary cluster by $s_{k}$, the subset of arms within the cluster $s_k$ by  $A_{s_{k}}$ and the set of clusters by $S$ with $|S|=p\leq K$. 
+Here $p$ is a pre-specified limit for the number of clusters.
+For simplicity, we assume that the optimal arm is unique and denote it by ${*}$, with $s^{*}$ denoting the corresponding cluster.
+ %and the subset of arms in $s^{*}$ is denoted by $A_{s^{*}}$. 
+The best arm in a cluster $s_{k}$ is denoted by $a_{max_{s_{k}}}$.  
+We denote the sample mean of the rewards seen so far for arm $i$ by $\hat{r_i}$ and for the true best arm within a cluster $s_k$ by $\hat{r}_{a_{\max_{s_{k}}}}$. $z_i$ is the number of times an arm $i$ has been pulled.
+%The exploration regulatory factor is denoted by $\psi$. The arm and cluster elimination parameters are denoted by $\rho_{a}$ and $\rho_{s}$ respectively. 
+%$\Delta_{i}^{'}=r_{a_{\max_{s_{k}}}} - r_{i}$, such that $a_{i}\in s_{k}$.
+% The variable $B_{m}$ denotes the arm set containing the arms that are not eliminated till round $m$.
+%  The exploration regulatory factor is denoted by $\psi_{m}$. %\todos{\textit{``$\hat{r}_{min_{s_{i}}}\in s_{i}$ as the arm with minimum estimated payoff''}. $\hat{r}_{min_{s_{i}}}\in s_{i}$ is the minimum estimated payoff and not the arm corresponding to min est payoff. Similar writing pops up at several other places, for e.g., in the statements of the propositions. (Subho) Changed the line as saying the minimum/maximum estimated payoff}
+%The parameter $\psi(m)$ is a monotonically decreasing function over the rounds, that is $\psi(m+1)\leq \psi(m)$. 
+%Also, we define $w\geq 2$, a weight factor.
+We assume that the rewards of all arms are bounded in $[0,1]$.
+
+
+%worst arm within a cluster $s_i$ by $\hat{r}_{min_{s_{k}}}\in s_{k}$

@@ -1,0 +1,160 @@
+\begin{thebibliography}{}
+
+\bibitem[Agrawal and Goyal, 2011]{agrawal2011analysis}
+Agrawal, S. and Goyal, N. (2011).
+\newblock Analysis of thompson sampling for the multi-armed bandit problem.
+\newblock {\em arXiv preprint arXiv:1111.1797}.
+
+\bibitem[Audibert and Bubeck, 2009]{audibert2009minimax}
+Audibert, J.-Y. and Bubeck, S. (2009).
+\newblock Minimax policies for adversarial and stochastic bandits.
+\newblock In {\em COLT}, pages 217--226.
+
+\bibitem[Audibert et~al., 2009]{audibert2009exploration}
+Audibert, J.-Y., Munos, R., and Szepesv{\'a}ri, C. (2009).
+\newblock Exploration--exploitation tradeoff using variance estimates in
+  multi-armed bandits.
+\newblock {\em Theoretical Computer Science}, 410(19):1876--1902.
+
+\bibitem[Auer, 2002]{auer2002using}
+Auer, P. (2002).
+\newblock Using confidence bounds for exploitation-exploration trade-offs.
+\newblock {\em Journal of Machine Learning Research}, 3(Nov):397--422.
+
+\bibitem[Auer et~al., 2002a]{auer2002finite}
+Auer, P., Cesa-Bianchi, N., and Fischer, P. (2002a).
+\newblock Finite-time analysis of the multiarmed bandit problem.
+\newblock {\em Machine learning}, 47(2-3):235--256.
+
+\bibitem[Auer et~al., 2002b]{auer2002nonstochastic}
+Auer, P., Cesa-Bianchi, N., Freund, Y., and Schapire, R.~E. (2002b).
+\newblock The nonstochastic multiarmed bandit problem.
+\newblock {\em SIAM Journal on Computing}, 32(1):48--77.
+
+\bibitem[Auer and Ortner, 2010]{auer2010ucb}
+Auer, P. and Ortner, R. (2010).
+\newblock Ucb revisited: Improved regret bounds for the stochastic multi-armed
+  bandit problem.
+\newblock {\em Periodica Mathematica Hungarica}, 61(1-2):55--65.
+
+\bibitem[Beygelzimer et~al., 2011]{beygelzimer2011contextual}
+Beygelzimer, A., Langford, J., Li, L., Reyzin, L., and Schapire, R.~E. (2011).
+\newblock Contextual bandit algorithms with supervised learning guarantees.
+\newblock In {\em AISTATS}, pages 19--26.
+
+\bibitem[Bubeck et~al., 2012]{bubeck2012bandits}
+Bubeck, S., Cesa-Bianchi, N., and Lugosi, G. (2012).
+\newblock Bandits with heavy tail.
+\newblock {\em arXiv preprint arXiv:1209.1727}.
+
+\bibitem[Bubeck et~al., 2009]{bubeck2009pure}
+Bubeck, S., Munos, R., and Stoltz, G. (2009).
+\newblock Pure exploration in multi-armed bandits problems.
+\newblock In {\em International conference on Algorithmic learning theory},
+  pages 23--37. Springer.
+
+\bibitem[Bubeck et~al., 2011]{bubeck2011pure}
+Bubeck, S., Munos, R., and Stoltz, G. (2011).
+\newblock Pure exploration in finitely-armed and continuous-armed bandits.
+\newblock {\em Theoretical Computer Science}, 412(19):1832--1852.
+
+\bibitem[Bui et~al., 2012]{bui2012clustered}
+Bui, L., Johari, R., and Mannor, S. (2012).
+\newblock Clustered bandits.
+\newblock {\em arXiv preprint arXiv:1206.4169}.
+
+\bibitem[Cappe et~al., 2012]{CapGarKau12}
+Cappe, O., Garivier, A., and Kaufmann, E. (2012).
+\newblock pymabandits.
+\newblock \url{http://mloss.org/software/view/415/}.
+
+\bibitem[Cesa-Bianchi et~al., 2013]{cesa2013gang}
+Cesa-Bianchi, N., Gentile, C., and Zappella, G. (2013).
+\newblock A gang of bandits.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  737--745.
+
+\bibitem[Even-Dar et~al., 2006]{even2006action}
+Even-Dar, E., Mannor, S., and Mansour, Y. (2006).
+\newblock Action elimination and stopping conditions for the multi-armed bandit
+  and reinforcement learning problems.
+\newblock {\em The Journal of Machine Learning Research}, 7:1079--1105.
+
+\bibitem[Friedman et~al., 2001]{friedman2001elements}
+Friedman, J., Hastie, T., and Tibshirani, R. (2001).
+\newblock {\em The elements of statistical learning}, volume~1.
+\newblock Springer series in statistics Springer, Berlin.
+
+\bibitem[Garivier and Capp{\'e}, 2011]{garivier2011kl}
+Garivier, A. and Capp{\'e}, O. (2011).
+\newblock The kl-ucb algorithm for bounded stochastic bandits and beyond.
+\newblock {\em arXiv preprint arXiv:1102.2490}.
+
+\bibitem[Gentile et~al., 2014]{gentile2014online}
+Gentile, C., Li, S., and Zappella, G. (2014).
+\newblock Online clustering of bandits.
+\newblock In {\em ICML}, pages 757--765.
+
+\bibitem[Kaufmann et~al., 2012]{kaufmann2012bayesian}
+Kaufmann, E., Capp{\'e}, O., and Garivier, A. (2012).
+\newblock On bayesian upper confidence bounds for bandit problems.
+\newblock In {\em AISTATS}, pages 592--600.
+
+\bibitem[Lai and Robbins, 1985]{lai1985asymptotically}
+Lai, T.~L. and Robbins, H. (1985).
+\newblock Asymptotically efficient adaptive allocation rules.
+\newblock {\em Advances in applied mathematics}, 6(1):4--22.
+
+\bibitem[Langford and Zhang, 2008]{langford2008epoch}
+Langford, J. and Zhang, T. (2008).
+\newblock The epoch-greedy algorithm for multi-armed bandits with side
+  information.
+\newblock In {\em Advances in neural information processing systems}, pages
+  817--824.
+
+\bibitem[Lattimore, 2015]{lattimore2015optimally}
+Lattimore, T. (2015).
+\newblock Optimally confident ucb: Improved regret for finite-armed bandits.
+\newblock {\em arXiv preprint arXiv:1507.07880}.
+
+\bibitem[Li et~al., 2010]{li2010contextual}
+Li, L., Chu, W., Langford, J., and Schapire, R.~E. (2010).
+\newblock A contextual-bandit approach to personalized news article
+  recommendation.
+\newblock In {\em Proceedings of the 19th international conference on World
+  wide web}, pages 661--670. ACM.
+
+\bibitem[Liu and Tsuruoka, 2016]{liu2016modification}
+Liu, Y.-C. and Tsuruoka, Y. (2016).
+\newblock Modification of improved upper confidence bounds for regulating
+  exploration in monte-carlo tree search.
+\newblock {\em Theoretical Computer Science}.
+
+\bibitem[Mannor and Tsitsiklis, 2004]{mannor2004sample}
+Mannor, S. and Tsitsiklis, J.~N. (2004).
+\newblock The sample complexity of exploration in the multi-armed bandit
+  problem.
+\newblock {\em Journal of Machine Learning Research}, 5(Jun):623--648.
+
+\bibitem[Robbins, 1952]{robbins1952some}
+Robbins, H. (1952).
+\newblock Some aspects of the sequential design of experiments.
+\newblock In {\em Herbert Robbins Selected Papers}, pages 169--177. Springer.
+
+\bibitem[Slivkins, 2014]{slivkins2014contextual}
+Slivkins, A. (2014).
+\newblock Contextual bandits with similarity information.
+\newblock {\em Journal of Machine Learning Research}, 15(1):2533--2568.
+
+\bibitem[Thompson, 1933]{thompson1933likelihood}
+Thompson, W.~R. (1933).
+\newblock On the likelihood that one unknown probability exceeds another in
+  view of the evidence of two samples.
+\newblock {\em Biometrika}, pages 285--294.
+
+\bibitem[Tolpin and Shimony, 2012]{tolpin2012mcts}
+Tolpin, D. and Shimony, S.~E. (2012).
+\newblock Mcts based on simple regret.
+\newblock In {\em AAAI}.
+
+\end{thebibliography}
